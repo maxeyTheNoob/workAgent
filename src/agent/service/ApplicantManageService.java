@@ -10,7 +10,7 @@ import agent.pojo.business;
 import agent.pojo.work;
 
 @Service
-
+@Transactional(rollbackFor=Exception.class)
 public class ApplicantManageService {
 
 }
