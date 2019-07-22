@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="agent.dao.employeeMapper" >
+  <resultMap id="BaseResultMap" type="agent.pojo.employee" >
+    <id column="emp_id" property="empId" jdbcType="INTEGER" />
+    <result column="emp_name" property="empName" jdbcType="VARCHAR" />
+    <result column="emp_sex" property="empSex" jdbcType="VARCHAR" />
+    <result column="emp_exp" property="empExp" jdbcType="INTEGER" />
+    <result column="emp_sta" property="empSta" jdbcType="INTEGER" />
+    <result column="emp_major" property="empMajor" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from employee
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="agent.pojo.employee" >
+    insert into employee values 
+    (default, #{empName,jdbcType=VARCHAR}, #{empSex,jdbcType=VARCHAR}, 
+      #{empExp,jdbcType=INTEGER}, #{empSta,jdbcType=INTEGER}, #{empMajor,jdbcType=INTEGER}
+      )
+  </insert>
+  	<update id="update" parameterType="agent.pojo.employee" >
+    update employee
+    <set >
+      <if test="empName != null" >
+        emp_name = #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="empSex != null" >
+        emp_sex = #{empSex,jdbcType=VARCHAR},
+      </if>
+      <if test="empExp != null" >
+        emp_exp=#{empExp,jdbcType=INTEGER},
+      </if>
+      <if test="empSta != null" >
+        emp_sta=#{empSta,jdbcType=INTEGER},
+      </if>
+      <if test="empMajor != null" >
+        emp_major = #{empMajor,jdbcType=INTEGER},
+      </if>
+    </set>
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </update>
+  <select id="queryBycondition" resultMap="BaseResultMap">
+		select e.*
+		from employee e
+	<where>
+	  <if test="empId != null" >
+        and emp_id = #{empId,jdbcType=INTEGER}
+      </if>
+	  <if test="empName != null" >
+        and emp_name = #{empName,jdbcType=VARCHAR}
+      </if>
+      <if test="empSex != null" >
+        and emp_sex = #{empSex,jdbcType=VARCHAR}
+      </if>
+      <if test="empExp != null" >
+        and emp_exp = #{empExp,jdbcType=INTEGER}
+      </if>
+      <if test="empSta != null" >
+        and emp_sta = #{empSta,jdbcType=INTEGER}
+      </if>
+      <if test="empMajor != null" >
+        and emp_major = #{empMajor,jdbcType=INTEGER}
+      </if>
+	</where>
+	</select>
+ 
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="agent.dao.businessMapper" >
+  <resultMap id="BaseResultMap" type="agent.pojo.business" >
+    <id column="bus_id" property="busId" jdbcType="INTEGER" />
+    <result column="bus_name" property="busName" jdbcType="VARCHAR" />
+    <result column="bus_con" property="busCon" jdbcType="VARCHAR" />
+  </resultMap>
+ <delete id="delete" parameterType="java.lang.Integer" >
+    delete from business
+    where bus_id = #{busId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="agent.pojo.business" >
+    insert into business values 
+    (default, #{busName,jdbcType=VARCHAR}, #{busCon,jdbcType=VARCHAR})
+  </insert>
+  <update id="update" parameterType="agent.pojo.business" >
+    update business
+    <set >
+      <if test="busName != null" >
+        bus_name = #{busName,jdbcType=VARCHAR},
+      </if>
+      <if test="busCon != null" >
+        bus_con = #{busCon,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where bus_id = #{busId,jdbcType=INTEGER}
+  </update>
+  <select id="queryBycondition" resultMap="BaseResultMap">
+		select b.*
+		from business b
+	<where>
+	  <if test="busId != null" >
+        and bus_id = #{busId,jdbcType=INTEGER}
+      </if>
+	  <if test="busName != null" >
+        and bus_name = #{busName,jdbcType=VARCHAR}
+      </if>
+      <if test="busCon != null" >
+        and bus_con = #{busCon,jdbcType=VARCHAR}
+      </if>
+	</where>
+	</select>
+	  
+</mapper>

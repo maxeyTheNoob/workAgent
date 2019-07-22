@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="agent.dao.workMapper" >
+  <resultMap id="BaseResultMap" type="agent.pojo.work" >
+    <id column="work_id" property="workId" jdbcType="INTEGER" />
+    <result column="work_bus" property="workBus" jdbcType="INTEGER" />
+    <result column="work_major" property="workMajor" jdbcType="INTEGER" />
+    <result column="work_exp" property="workExp" jdbcType="INTEGER" />
+    <result column="work_det" property="workDet" jdbcType="VARCHAR" />
+    <result column="work_sal" property="workSal" jdbcType="INTEGER" />
+    <result column="work_sta" property="workSta" jdbcType="INTEGER" />
+    <association property="workBus" javaType="agent.pojo.business">
+			<id column="work_bus" property="busId" jdbcType="INTEGER" />
+		    <result column="bus_name" property="busName" jdbcType="VARCHAR" />
+		    <result column="bus_con" property="busCon" jdbcType="VARCHAR" />
+		</association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    work_id, work_bus, work_major, work_exp, work_det, work_sal, work_sta
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT w.*,b.*
+	FROM works w
+	JOIN business b on w.work_bus=b.bus_id
+    where work_id = #{workId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByCondition" resultMap="BaseResultMap" parameterType="agent.pojo.work" >
+    SELECT w.*,b.*
+	FROM works w
+	JOIN business b on w.work_bus=b.bus_id
+    <where>
+			<if test="workId!=null">
+				and work_id=#{workId}
+			</if>
+			<if test="workBus!=null">
+				and work_bus=#{workBus.busId}
+			</if>
+			<if test="workMajor!=null">
+				and work_major &lt;= #{workMajor}
+			</if>
+			<if test="workExp!=null">
+				and work_exp &lt;= #{workExp}
+			</if>
+			<if test="workDet!=null">
+				and work_det = #{workDet}
+			</if>
+			<if test="workSal!=null">
+				and work_sal = #{workSal}
+			</if>
+			<if test="workSta!=null">
+				and work_sta = #{workSta}
+			</if>
+	</where>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from work
+    where work_id = #{workId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="agent.pojo.work" >
+    insert into work (work_id, work_bus, work_major, 
+      work_exp, work_det, work_sal, 
+      work_sta)
+    values (default, #{workBus.busId,jdbcType=INTEGER}, #{workMajor,jdbcType=INTEGER}, 
+      #{workExp,jdbcType=INTEGER}, #{workDet,jdbcType=VARCHAR}, #{workSal,jdbcType=INTEGER}, 
+      #{workSta,jdbcType=INTEGER})
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="agent.pojo.work" >
+    update work
+    <set >
+      <if test="workBus != null" >
+        work_bus = #{workBus.busId,jdbcType=INTEGER},
+      </if>
+      <if test="workMajor != null" >
+        work_major = #{workMajor,jdbcType=INTEGER},
+      </if>
+      <if test="workExp != null" >
+        work_exp = #{workExp,jdbcType=INTEGER},
+      </if>
+      <if test="workDet != null" >
+        work_det = #{workDet,jdbcType=VARCHAR},
+      </if>
+      <if test="workSal != null" >
+        work_sal = #{workSal,jdbcType=INTEGER},
+      </if>
+      <if test="workSta != null" >
+        work_sta = #{workSta,jdbcType=INTEGER},
+      </if>
+    </set>
+    where work_id = #{workId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="agent.pojo.work" >
+    update work
+    set work_bus = #{workBus.busId,jdbcType=INTEGER},
+      work_major = #{workMajor,jdbcType=INTEGER},
+      work_exp = #{workExp,jdbcType=INTEGER},
+      work_det = #{workDet,jdbcType=VARCHAR},
+      work_sal = #{workSal,jdbcType=INTEGER},
+      work_sta = #{workSta,jdbcType=INTEGER}
+    where work_id = #{workId,jdbcType=INTEGER}
+  </update>
+</mapper>

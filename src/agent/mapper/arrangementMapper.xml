@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="agent.dao.arrangementMapper">
+	<resultMap id="BaseResultMap" type="agent.pojo.arrangement">
+		<id column="arra_id" property="arraId" jdbcType="INTEGER" />
+		<result column="arra_sta" property="arraSta" jdbcType="INTEGER" />
+		<result column="arra_opt" property="arraOpt" jdbcType="DATE" />
+		<result column="arra_edt" property="arraEdt" jdbcType="DATE" />
+		<association property="arraEmp" javaType="agent.pojo.employee">
+			<id column="arra_emp" property="empId" jdbcType="INTEGER" />
+			<result column="emp_name" property="empName" jdbcType="VARCHAR" />
+			<result column="emp_sex" property="empSex" jdbcType="VARCHAR" />
+			<result column="emp_exp" property="empExp" jdbcType="VARCHAR" />
+			<result column="emp_sta" property="empSta" jdbcType="INTEGER" />
+			<result column="emp_major" property="empMajor" jdbcType="VARCHAR" />
+		</association>
+		<association property="arraWork" javaType="agent.pojo.work">
+			<id column="arra_work" property="workId" jdbcType="INTEGER" />
+			<result column="work_major" property="workMajor" jdbcType="VARCHAR" />
+			<result column="work_exp" property="workExp" jdbcType="VARCHAR" />
+			<result column="work_det" property="workDet" jdbcType="VARCHAR" />
+			<result column="work_sal" property="workSal" jdbcType="INTEGER" />
+			<result column="work_sta" property="workSta" jdbcType="INTEGER" />
+		</association>
+	</resultMap>
+	<sql id="Base_Column_List">
+		arra_id, arra_emp, arra_work, arra_sta, arra_opt, arra_edt
+	</sql>
+
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select a.*,e.*,w.*
+		from arrangement a
+		JOIN employee e ON a.arra_emp=e.emp_id
+		join works w ON
+		a.arra_work=w.work_id
+		where arra_id = #{arraId,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByCondition" resultMap="BaseResultMap"
+		parameterType="agent.pojo.arrangement">
+		select a.*,e.*,w.*
+		from arrangement a
+		JOIN employee e ON a.arra_emp=e.emp_id
+		join works w ON
+		a.arra_work=w.work_id
+		<where>
+			<if test="arraId!=null">
+				and arra_id=#{arraId}
+			</if>
+			<if test="arraEmp!=null">
+				and arra_emp=#{arraEmp.empId}
+			</if>
+			<if test="arraWork!=null">
+				and arra_work=#{arraWork.workId}
+			</if>
+			<if test="arraSta!=null">
+				and arra_sta=#{arraSta}
+			</if>
+			<if test="arraOpt!=null">
+				and arra_opt &gt;= #{arraOpt}
+			</if>
+			<if test="arraEdt!=null">
+				and arra_edt &lt;= #{arraEdt}
+			</if>
+		</where>
+	</select>
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from arrangement
+		where arra_id = #{arraId,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="deleteByCondition">
+		delete from arrangement
+		<where>
+			<if test="empId!=null">
+				and arra_emp=#{empId}
+			</if>
+			<if test="workId!=null">
+				and arra_work=#{workId}
+			</if>
+		</where>
+	</delete>
+
+
+	<insert id="insert" parameterType="agent.pojo.arrangement">
+		insert into arrangement (arra_id, arra_emp, arra_work,
+		arra_sta, arra_opt, arra_edt
+		)
+		values (default, #{arraEmp.empId,jdbcType=INTEGER},
+		#{arraWork.workId,jdbcType=INTEGER},
+		#{arraSta,jdbcType=INTEGER}, #{arraOpt,jdbcType=DATE}, #{arraEdt,jdbcType=DATE}
+		)
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="agent.pojo.arrangement">
+		update arrangement
+		<set>
+			<if test="arraEmp != null">
+				arra_emp = #{arraEmp.empId,jdbcType=INTEGER},
+			</if>
+			<if test="arraWork != null">
+				arra_work = #{arraWork.workId,jdbcType=INTEGER},
+			</if>
+			<if test="arraSta != null">
+				arra_sta = #{arraSta,jdbcType=INTEGER},
+			</if>
+			<if test="arraOpt != null">
+				arra_opt = #{arraOpt,jdbcType=DATE},
+			</if>
+			<if test="arraEdt != null">
+				arra_edt = #{arraEdt,jdbcType=DATE},
+			</if>
+		</set>
+		where arra_id = #{arraId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="agent.pojo.arrangement">
+		update arrangement
+		set arra_emp = #{arraEmp.empId,jdbcType=INTEGER},
+		arra_work = #{arraWork.workId,jdbcType=INTEGER},
+		arra_sta = #{arraSta,jdbcType=INTEGER},
+		arra_opt = #{arraOpt,jdbcType=DATE},
+		arra_edt = #{arraEdt,jdbcType=DATE}
+		where arra_id = #{arraId,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 获取当前自动生成的Id -->
+    <select id="getLastInsertId" resultType="java.lang.Integer">
+		SELECT LAST_INSERT_ID()
+	</select>	
+</mapper>

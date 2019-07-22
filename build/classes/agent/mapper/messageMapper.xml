@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="agent.dao.messageMapper" >
+  <resultMap id="BaseResultMap" type="agent.pojo.message" >
+    <id column="mes_id" property="mesId" jdbcType="INTEGER" />
+    <result column="mes_emp" property="mesEmp" jdbcType="INTEGER" />
+    <association property="mesArra" javaType="agent.pojo.arrangement">
+			<id column="mes_arra" property="arraId" jdbcType="INTEGER" />
+			<result column="arra_emp" property="arraEmp" jdbcType="INTEGER" />
+            <result column="arra_work" property="arraWork" jdbcType="INTEGER" />
+            <result column="arra_sta" property="arraSta" jdbcType="INTEGER" />
+            <result column="arra_opt" property="arraOpt" jdbcType="DATE" />
+            <result column="arra_edt" property="arraEdt" jdbcType="DATE" />
+		</association>
+		 <association property="mesBus" javaType="agent.pojo.business">
+			<id column="mes_bus" property="busId" jdbcType="INTEGER" />
+			<result column="bus_name" property="busName" jdbcType="VARCHAR" />
+            <result column="bus_con" property="busCon" jdbcType="VARCHAR" />
+		</association>
+  </resultMap>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from message
+    where mes_id = #{mesId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="agent.pojo.message" >
+    insert into message values 
+    (default, #{mesArra.arraId}, #{mesEmp},#{mesBud.busId})
+  </insert>
+  <update id="update" parameterType="agent.pojo.message" >
+    update message
+    <set >
+      <if test="mesArra.arraId != null" >
+        mes_arra = #{mesArra.arraId,jdbcType=INTEGER},
+      </if>
+      <if test="mesEmp != null" >
+        mes_emp = #{mesEmp,jdbcType=INTEGER},
+      </if>
+      <if test="mesBus != null" >
+        mes_bus = #{mesBus.busId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where mes_id = #{mesId,jdbcType=INTEGER}
+  </update>
+  <select id="queryBycondition" resultMap="BaseResultMap">
+		SELECT  m.*,a.*,b.*
+		FROM     message m
+		LEFT OUTER JOIN arrange a ON m.`mes_arra`=a.`arra_id`
+		LEFT OUTER JOIN business b ON m.`mes_bus`=b.`bus_id`
+	<where>
+	  <if test="mesId != null" >
+        and mes_id = #{mesId,jdbcType=INTEGER}
+      </if>
+	  <if test="mesArra != null" >
+        and mes_arra = #{mesArra,jdbcType=INTEGER}
+      </if>
+      <if test="mesEmp != null" >
+        and mes_emp = #{mesEmp,jdbcType=INTEGER}
+      </if>
+      <if test="mesBus != null" >
+        and mes_bus = #{mesBus,jdbcType=INTEGER}
+      </if>
+	</where>
+	</select>
+</mapper>
