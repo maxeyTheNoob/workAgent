@@ -14,5 +14,5 @@ public interface messageMapper {
     
     void update(message record);
     
-    List<message> queryBycondition(@Param("mesId") Integer mesId,@Param("mesArra") Integer mesArra,@Param("mesEmp") Integer mesEmp,@Param("mesBus") Integer mesBus,@Param("mesType") Integer mesType);
+    message[] queryBycondition(@Param("mesId") Integer mesId,@Param("mesArra") Integer mesArra,@Param("mesEmp") Integer mesEmp,@Param("mesBus") Integer mesBus,@Param("mesType") Integer mesType);
 }

@@ -9,7 +9,7 @@ public class arrangement {
 
     private work arraWork;
 
-    private Integer arraSta;//0未开始  1进行中  2完成
+    private Integer arraSta;//0未开始  1进行中  2完成  3撤销
 
     private Date arraOpt;
 

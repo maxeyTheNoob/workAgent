@@ -49,10 +49,10 @@
 			<if test="arraId!=null">
 				and arra_id=#{arraId}
 			</if>
-			<if test="arraEmp!=null">
+			<if test="arraEmp!=null and arraEmp.empId!=null">
 				and arra_emp=#{arraEmp.empId}
 			</if>
-			<if test="arraWork!=null">
+			<if test="arraWork!=null and arraWork.workId!=null">
 				and arra_work=#{arraWork.workId}
 			</if>
 			<if test="arraSta!=null">
@@ -72,6 +72,21 @@
 		delete from arrangement
 		where arra_id = #{arraId,jdbcType=INTEGER}
 	</delete>
+	
+	<delete id="deleteByCondition">
+		delete from arrangement
+		<where>
+			<if test="empId!=null">
+				and arra_emp=#{empId}
+			</if>
+			<if test="workId!=null">
+				and arra_work=#{workId}
+			</if>
+			<if test="arraSta!=null">
+				and arra_sta=#{arraSta}
+			</if>
+		</where>
+	</delete>
 
 
 	<insert id="insert" parameterType="agent.pojo.arrangement">
@@ -88,10 +103,10 @@
 	<update id="updateByPrimaryKeySelective" parameterType="agent.pojo.arrangement">
 		update arrangement
 		<set>
-			<if test="arraEmp != null">
+			<if test="arraEmp!=null and arraEmp.empId!=null">
 				arra_emp = #{arraEmp.empId,jdbcType=INTEGER},
 			</if>
-			<if test="arraWork != null">
+			<if test="arraWork!=null and arraWork.workId!=null">
 				arra_work = #{arraWork.workId,jdbcType=INTEGER},
 			</if>
 			<if test="arraSta != null">

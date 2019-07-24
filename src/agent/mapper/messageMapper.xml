@@ -25,7 +25,7 @@
   </delete>
   <insert id="insert" parameterType="agent.pojo.message" >
     insert into message values 
-    (default, #{mesArra.arraId}, #{mesEmp},#{mesBud.busId},#{mesType})
+    (default, #{mesArra.arraId}, #{mesEmp},#{mesBus.busId},#{mesType})
   </insert>
   <update id="update" parameterType="agent.pojo.message" >
     update message
@@ -48,7 +48,7 @@
   <select id="queryBycondition" resultMap="BaseResultMap">
 		SELECT  m.*,a.*,b.*
 		FROM     message m
-		LEFT OUTER JOIN arrange a ON m.`mes_arra`=a.`arra_id`
+		LEFT OUTER JOIN arrangement a ON m.`mes_arra`=a.`arra_id`
 		LEFT OUTER JOIN business b ON m.`mes_bus`=b.`bus_id`
 	<where>
 	  <if test="mesId != null" >

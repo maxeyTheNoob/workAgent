@@ -33,7 +33,7 @@
 			<if test="workId!=null">
 				and work_id=#{workId}
 			</if>
-			<if test="workBus!=null">
+			<if test="workBus!=null and workBus.busId!=null">
 				and work_bus=#{workBus.busId}
 			</if>
 			<if test="workMajor!=null">
@@ -55,13 +55,13 @@
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from work
+    delete from works
     where work_id = #{workId,jdbcType=INTEGER}
   </delete>
   
   
   <insert id="insert" parameterType="agent.pojo.work" >
-    insert into work (work_id, work_bus, work_major, 
+    insert into works (work_id, work_bus, work_major, 
       work_exp, work_det, work_sal, 
       work_sta)
     values (default, #{workBus.busId,jdbcType=INTEGER}, #{workMajor,jdbcType=INTEGER}, 
@@ -71,9 +71,9 @@
   
   
   <update id="updateByPrimaryKeySelective" parameterType="agent.pojo.work" >
-    update work
+    update works
     <set >
-      <if test="workBus != null" >
+      <if test="workBus != null and workBus.busId != null" >
         work_bus = #{workBus.busId,jdbcType=INTEGER},
       </if>
       <if test="workMajor != null" >
@@ -95,7 +95,7 @@
     where work_id = #{workId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="agent.pojo.work" >
-    update work
+    update works
     set work_bus = #{workBus.busId,jdbcType=INTEGER},
       work_major = #{workMajor,jdbcType=INTEGER},
       work_exp = #{workExp,jdbcType=INTEGER},

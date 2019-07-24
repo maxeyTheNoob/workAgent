@@ -9,7 +9,7 @@ public class message {
 
     private business mesBus;
     
-    private Integer mesType;
+    private Integer mesType;//0Æ¥ÅäÉêÇë  1³·ÏúÍ¨Öª
 
     public message(Integer mesId) {
 		super();

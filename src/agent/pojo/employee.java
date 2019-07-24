@@ -9,9 +9,9 @@ public class employee {
 
     private Integer empExp;
 
-    private Integer empSta;
+    private Integer empSta;//0空闲 1派出
 
-    private Integer empMajor;
+    private Integer empMajor;//1初中毕业  2职高毕业  3高中毕业  4大专毕业  5本科毕业  6硕士毕业
 
     public employee(Integer empId) {
 		super();
